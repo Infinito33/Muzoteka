@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Muzoteka.Models.utwor>
+
+@{
+    ViewBag.Title = "SearchedTracks";
+}
+
+<h2>Top 10 wyników</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gatunek)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dlugosc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.link)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dddb)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.album.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.playlista.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.wykonawca.imie)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gatunek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dlugosc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.link)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dddb)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.album.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.playlista.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wykonawca.imie)
+            </td>
+        </tr>
+    }
+
+</table>

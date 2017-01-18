@@ -1,0 +1,48 @@
+﻿@model Muzoteka.Models.playlista
+
+@{
+    ViewBag.Title = "Usuń playlista";
+}
+
+<h2>Usuń playlista</h2>
+
+<h3>Czy na pewno chcesz usunąć playlistę @Model.nazwa</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.data_utworzenia_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_utworzenia_short)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.opis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.opis)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-danger" /> 
+            @Html.ActionLink("Powrót do listy", "Index", new { }, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

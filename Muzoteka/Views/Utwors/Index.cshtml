@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Muzoteka.Models.utwor>
+
+@{
+    ViewBag.Title = "Utwory";
+}
+
+<h2>Utwory</h2>
+
+@if (Context.User.IsInRole("ADMIN"))
+{
+    <p>
+        @Html.ActionLink("Dodaj nowy utwór", "Create")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gatunek)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dlugosc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.link)
+        </th>
+        <th>
+            Album
+        </th>
+        <th>
+            Wykonawca
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gatunek)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dlugosc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.link)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.album.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.wykonawca.pseudonim)
+            </td>
+            <td>
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Dodaj do playlisty", "InsertUtwor", "Playlistas", new { id = item.id }, new { @class = "btn btn-primary" })
+
+                @if (Context.User.IsInRole("ADMIN"))
+                {
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.id }, new { @class = "btn btn-primary" })
+
+                    @Html.ActionLink("  Usuń", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+                }
+            </td>
+
+        </tr>
+    }
+
+</table>

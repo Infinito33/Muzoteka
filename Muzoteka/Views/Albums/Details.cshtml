@@ -1,0 +1,53 @@
+﻿@model Muzoteka.ViewModel.AlbumViewModel
+
+@{
+    ViewBag.Title = "Szczegóły";
+}
+
+<h2>Szczegóły</h2>
+
+<div>
+    <h4>@Model.album.nazwa</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.album.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.data_wydania_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.data_wydania_short)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.wykonawca)
+        </dt>
+
+        <dd>
+            @Html.ListBoxFor(m => m.album.wykonawca, new SelectList(Model.album.wykonawca, "id", "pseudonim"))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.utwor)
+        </dt>
+
+        <dd>
+            @Html.ListBoxFor(m => m.album.utwor, new SelectList(Model.album.utwor, "id", "nazwa"))
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if (Context.User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edytuj  ", "Edit", new { id = Model.album.id }, new { @class = "btn btn-primary" })
+    }
+    @Html.ActionLink("Powrót do listy albumów", "Index", new { }, new { @class = "btn btn-primary" })
+</p>

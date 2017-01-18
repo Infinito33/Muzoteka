@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Kontakt";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h2>@ViewBag.Title.</h2>
+    <h3>@ViewBag.Message</h3>
+
+    <address>
+        <strong>Autor:</strong>   <p>Tomasz Huchro</p>
+        <strong>Mail:</strong>   <a href="mailto:Support@example.com">tomasz.huchro@gmail.com</a><br />
+    </address>
+}

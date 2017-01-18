@@ -1,0 +1,55 @@
+﻿@model Muzoteka.Models.wykonawca
+
+@{
+    ViewBag.Title = "Usuń";
+}
+
+<h2>Usuń</h2>
+
+<h3>Czy na pewno chcesz usunąć wykonawcę @Model.pseudonim</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.imie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.imie)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwisko)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwisko)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pseudonim)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pseudonim)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.data_ur_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_ur_short)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-danger" />    
+            @Html.ActionLink("Powrót do listy", "Index", new { }, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

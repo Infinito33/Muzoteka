@@ -1,0 +1,52 @@
+﻿@model Muzoteka.ViewModel.AlbumViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>album</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.album.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.data_wydania)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.data_wydania)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.dddb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.dddb)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.album.wykonawca)
+        </dt>
+
+        @*<dd>
+    @*Html.ListBox("id", new SelectList(Model.wykonawca, "id", "pseudonim"))   sprawdzic!*@
+            @*Html.ListBoxFor(m => m.wykonawca, new SelectList(Model.wykonawca, "id", "pseudonim"))*@
+            @*@Html.ListBoxFor(m => m.album.wykonawca, Model.AllWykonawcas)
+        </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.album.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

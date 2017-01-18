@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Muzoteka.Models.album>
+
+@{
+    ViewBag.Title = "Albumy";
+}
+
+<h2>Albumy</h2>
+
+@if (Context.User.IsInRole("ADMIN"))
+{
+    <p>
+        @Html.ActionLink("Dodaj nowy album", "Create")
+    </p>
+}
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.data_wydania_short)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.wykonawca)
+        </th>
+        <th>
+            Akcje
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nazwa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.data_wydania_short)
+            </td>
+            <td>
+                @Html.ListBox("id", new SelectList(item.wykonawca, "id", "pseudonim"))
+            </td>
+            <td>
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.id }, new { @class = "btn btn-primary" })
+
+                @if (Context.User.IsInRole("ADMIN"))
+                {
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.id }, new { @class = "btn btn-primary" })
+
+                    @Html.ActionLink("  Usuń", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
+                }
+            </td>
+        </tr>
+    }
+
+</table>

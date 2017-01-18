@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Muzoteka.Models.wykonawca>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Wykonawcy</h2>
+
+@if (Context.User.IsInRole("ADMIN"))
+{
+    <p>
+        @Html.ActionLink("Dodaj nowego wykonawcę", "Create")
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.imie)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nazwisko)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pseudonim)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.data_ur_short)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.opis)
+        </th>
+        <th>Akcje</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.imie)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nazwisko)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pseudonim)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.data_ur_short)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.opis)
+        </td>
+        <td>
+            @Html.ActionLink("Szczegóły", "Details", new { id = item.id }, new { @class = "btn btn-primary" })       
+
+            @if (Context.User.IsInRole("ADMIN"))
+                {
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.id }, new { @class = "btn btn-primary" })        
+
+                @Html.ActionLink("  Usuń", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })      
+            }
+        </td>
+
+    </tr>
+}
+
+</table>

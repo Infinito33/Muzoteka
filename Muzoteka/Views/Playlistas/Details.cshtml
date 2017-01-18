@@ -1,0 +1,97 @@
+﻿@model Muzoteka.Models.playlista
+
+@{
+    ViewBag.Title = "Szczegóły";
+}
+
+<h2>Szczegóły</h2>
+
+<div>
+    <h4>@Model.nazwa</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.data_utworzenia_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_utworzenia_short)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.opis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.opis)
+        </dd>
+
+    </dl>
+    <hr />
+    <h3>Utwory w playliście</h3>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Nazwa")
+            </th>
+            <th>
+                @Html.DisplayName("Gatunek")
+            </th>
+            <th>
+                @Html.DisplayName("Długość")
+            </th>
+            <th>
+                @Html.DisplayName("Link")
+            </th>
+            <th>
+                @Html.DisplayName("Album")
+            </th>
+            <th>
+                @Html.DisplayName("Wykonawca")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.utwor)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.gatunek)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dlugosc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.link)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.album.nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.playlista.nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wykonawca.pseudonim)
+                </td>
+                <td>
+                    @Html.ActionLink("Szczegóły", "Details", "Utwors", new { id = item.id }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edytuj", "Edit", new { id = Model.id }, new { @class = "btn btn-primary" }) 
+    @Html.ActionLink("Powrót do listy", "Index", new { }, new { @class = "btn btn-primary" })
+</p>

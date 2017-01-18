@@ -1,0 +1,48 @@
+﻿@model Muzoteka.ViewModel.PlaylistaUtworViewModel
+
+@{
+    ViewBag.Title = "Wstaw utwor";
+}
+
+<h2>Wstaw utwór do playlisty</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.utwor.nazwa)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.utwor.nazwa)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.utwor.gatunek)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.utwor.gatunek)
+            </dd>
+        </dl>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AllPlaylistas, "Playlisty", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBoxFor(m => m.SelectedPlaylistas, Model.AllPlaylistas)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+

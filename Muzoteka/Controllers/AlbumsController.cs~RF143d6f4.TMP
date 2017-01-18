@@ -1,0 +1,207 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using Muzoteka.Models;
+using Muzoteka.ViewModel;
+
+namespace Muzoteka.Controllers
+{
+    public class AlbumsController : Controller
+    {
+        private muzotekaEntities db = new muzotekaEntities();
+
+        // GET: Albums
+        public ActionResult Index()
+        {
+            return View(db.album.ToList());
+        }
+
+        // GET: Albums/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var albumViewModel = new AlbumViewModel()
+            {
+                album = db.album.Include(i => i.wykonawca).First(i => i.id == id),
+            };
+
+            if (albumViewModel.album == null)
+                return HttpNotFound();
+
+            var allWykonawcasList = db.wykonawca.ToList();
+            albumViewModel.AllWykonawcas = allWykonawcasList.Select(o => new SelectListItem
+            {
+                Text = o.pseudonim,
+                Value = o.id.ToString()
+            });
+
+            return View(albumViewModel);
+        
+        }
+
+        // GET: Albums/Create
+        public ActionResult Create()
+        {
+            AlbumViewModel albumViewModel = new AlbumViewModel()
+            {
+                album = new album()
+            };
+            var allWykonawcasList = db.wykonawca.ToList();
+            albumViewModel.AllWykonawcas = allWykonawcasList.Select(o => new SelectListItem
+            {
+                Text = o.pseudonim,
+                Value = o.id.ToString()
+            });
+
+            return View(albumViewModel);
+        }
+
+        // POST: Albums/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "id,nazwa,data_wydania,dddb")] album album)
+        public ActionResult Create(AlbumViewModel albumViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var selectedWykonawcas = db.wykonawca.Where(m => albumViewModel.SelectedWykonawcas.Contains(m.id)).ToList();
+                albumViewModel.album.wykonawca = (ICollection<wykonawca>) selectedWykonawcas;
+                db.album.Add(albumViewModel.album);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(albumViewModel);
+        }
+
+        // GET: Albums/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var albumViewModel = new AlbumViewModel()
+            {
+                album = db.album.Include(i => i.wykonawca).First(i => i.id == id),
+            };
+
+            if (albumViewModel.album == null)
+                return HttpNotFound();
+
+            var allWykonawcasList = db.wykonawca.ToList();
+            albumViewModel.AllWykonawcas = allWykonawcasList.Select(o => new SelectListItem
+            {
+                Text = o.pseudonim,
+                Value = o.id.ToString()
+            });
+
+            return View(albumViewModel);
+        }
+
+        // POST: Albums/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "id,nazwa,data_wydania,dddb")] album album)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(album).State = System.Data.Entity.EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(album);
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(AlbumViewModel albumView)
+        {
+
+            if (albumView == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
+
+            if (ModelState.IsValid)
+            {
+                var albumToUpdate = db.album.Include(i => i.wykonawca).First(i => i.id == albumView.album.id);
+
+                if (TryUpdateModel(albumToUpdate, "album", new string[] { "nazwa" }))
+                {
+                    var newWykonawcas = db.album.Where(m => albumView.SelectedWykonawcas.Contains(m.id)).ToList();
+                    var updatedWykonawcas = new HashSet<int>(albumView.SelectedWykonawcas);
+                    foreach (wykonawca w in db.wykonawca)
+                    {
+                        if (!updatedWykonawcas.Contains(w.id))
+                        {
+                            albumToUpdate.wykonawca.Remove(w);
+                        }
+                        else
+                        {
+                            albumToUpdate.wykonawca.Add((w));
+                        }
+                    }
+
+                    db.Entry(albumToUpdate).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
+            }
+
+            return View(albumView);
+        }
+
+        // GET: Albums/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            album album = db.album.Find(id);
+            if (album == null)
+            {
+                return HttpNotFound();
+            }
+            return View(album);
+        }
+
+        // POST: Albums/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            album album = db.album.Find(id);
+            db.album.Remove(album);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

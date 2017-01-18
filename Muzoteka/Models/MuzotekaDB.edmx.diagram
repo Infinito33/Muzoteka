@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cae2d5fe757043b690e4bb703ec7ef3b" Name="Diagram1">
+        <EntityTypeShape EntityType="muzotekaModel.administrator" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.album" Width="1.5" PointX="10.875" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.ocena_utwor" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.playlista" Width="1.5" PointX="3.625" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.utwor" Width="1.5" PointX="7.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.utwor_w_playlista" Width="1.5" PointX="6.125" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.uzytkownik" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="muzotekaModel.wykonawca" Width="1.5" PointX="9.25" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="muzotekaModel.utw_alb" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.ocena_utwor1" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.ocena_uzytkownik" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.utw_playlista" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.utwor_playlista" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.uzytkownikPlaylista" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.utw_wyk" ManuallyRouted="false" />
+        <AssociationConnector Association="muzotekaModel.album_has_wykonawca" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

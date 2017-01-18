@@ -1,0 +1,39 @@
+﻿@model Muzoteka.Models.album
+
+@{
+    ViewBag.Title = "Usuń";
+}
+
+<h2>Usuń album</h2>
+
+<h3>Czy na pewno chcesz usunąć album @Model.nazwa?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.data_wydania_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.data_wydania_short)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Usuń" class="btn btn-danger" /> 
+            @Html.ActionLink("Powrót do listy albumów", "Index", new { }, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>

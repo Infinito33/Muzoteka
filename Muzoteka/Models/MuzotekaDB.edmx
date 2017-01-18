@@ -1,0 +1,629 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="muzotekaModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="administrator">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="album">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nazwa" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="data_wydania" Type="date" Nullable="false" />
+          <Property Name="dddb" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="album_has_wykonawca">
+          <Key>
+            <PropertyRef Name="album_id" />
+            <PropertyRef Name="wykonawca_id" />
+          </Key>
+          <Property Name="album_id" Type="int" Nullable="false" />
+          <Property Name="wykonawca_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ocena_utwor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ocena" Type="int" Nullable="false" />
+          <Property Name="idutwor" Type="int" Nullable="false" />
+          <Property Name="iduzytkownik" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="playlista">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nazwa" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="data_utworzenia" Type="date" Nullable="false" />
+          <Property Name="opis" Type="varchar" MaxLength="255" />
+          <Property Name="iduzytkownik" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="utwor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nazwa" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="gatunek" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="dlugosc" Type="int" />
+          <Property Name="link" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="dddb" Type="date" Nullable="false" />
+          <Property Name="idalbum" Type="int" Nullable="false" />
+          <Property Name="idwyk" Type="int" Nullable="false" />
+          <Property Name="idplaylista" Type="int" />
+        </EntityType>
+        <EntityType Name="utwor_w_playlista">
+          <Key>
+            <PropertyRef Name="utwor_id" />
+            <PropertyRef Name="playlista_id" />
+          </Key>
+          <Property Name="utwor_id" Type="int" Nullable="false" />
+          <Property Name="playlista_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="uzytkownik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="uprawnienia" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="wykonawca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="45" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="45" />
+          <Property Name="pseudonim" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="data_ur" Type="date" />
+          <Property Name="dddb" Type="date" Nullable="false" />
+          <Property Name="opis" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="fk_album_has_wykonawca_album1">
+          <End Role="album" Type="Self.album" Multiplicity="1" />
+          <End Role="album_has_wykonawca" Type="Self.album_has_wykonawca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="album">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="album_has_wykonawca">
+              <PropertyRef Name="album_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_album_has_wykonawca_wykonawca1">
+          <End Role="wykonawca" Type="Self.wykonawca" Multiplicity="1" />
+          <End Role="album_has_wykonawca" Type="Self.album_has_wykonawca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="wykonawca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="album_has_wykonawca">
+              <PropertyRef Name="wykonawca_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ocena_utwor1">
+          <End Role="utwor" Type="Self.utwor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ocena_utwor" Type="Self.ocena_utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="utwor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ocena_utwor">
+              <PropertyRef Name="idutwor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ocena_uzytkownik">
+          <End Role="uzytkownik" Type="Self.uzytkownik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ocena_utwor" Type="Self.ocena_utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ocena_utwor">
+              <PropertyRef Name="iduzytkownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utw_alb">
+          <End Role="album" Type="Self.album" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="album">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idalbum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utw_playlista">
+          <End Role="playlista" Type="Self.playlista" Multiplicity="0..1" />
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="playlista">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idplaylista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utw_wyk">
+          <End Role="wykonawca" Type="Self.wykonawca" Multiplicity="1" />
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="wykonawca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idwyk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utwor_playlista">
+          <End Role="playlista" Type="Self.playlista" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="utwor_w_playlista" Type="Self.utwor_w_playlista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="playlista">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor_w_playlista">
+              <PropertyRef Name="playlista_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="uzytkownikPlaylista">
+          <End Role="uzytkownik" Type="Self.uzytkownik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="playlista" Type="Self.playlista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="playlista">
+              <PropertyRef Name="iduzytkownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="muzotekaModelStoreContainer">
+          <EntitySet Name="administrator" EntityType="Self.administrator" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="album" EntityType="Self.album" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="album_has_wykonawca" EntityType="Self.album_has_wykonawca" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="ocena_utwor" EntityType="Self.ocena_utwor" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="playlista" EntityType="Self.playlista" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="utwor" EntityType="Self.utwor" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="utwor_w_playlista" EntityType="Self.utwor_w_playlista" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="uzytkownik" EntityType="Self.uzytkownik" Schema="muzoteka" store:Type="Tables" />
+          <EntitySet Name="wykonawca" EntityType="Self.wykonawca" Schema="muzoteka" store:Type="Tables" />
+          <AssociationSet Name="fk_album_has_wykonawca_album1" Association="Self.fk_album_has_wykonawca_album1">
+            <End Role="album" EntitySet="album" />
+            <End Role="album_has_wykonawca" EntitySet="album_has_wykonawca" />
+          </AssociationSet>
+          <AssociationSet Name="fk_album_has_wykonawca_wykonawca1" Association="Self.fk_album_has_wykonawca_wykonawca1">
+            <End Role="wykonawca" EntitySet="wykonawca" />
+            <End Role="album_has_wykonawca" EntitySet="album_has_wykonawca" />
+          </AssociationSet>
+          <AssociationSet Name="ocena_utwor1" Association="Self.ocena_utwor1">
+            <End Role="utwor" EntitySet="utwor" />
+            <End Role="ocena_utwor" EntitySet="ocena_utwor" />
+          </AssociationSet>
+          <AssociationSet Name="ocena_uzytkownik" Association="Self.ocena_uzytkownik">
+            <End Role="uzytkownik" EntitySet="uzytkownik" />
+            <End Role="ocena_utwor" EntitySet="ocena_utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utw_alb" Association="Self.utw_alb">
+            <End Role="album" EntitySet="album" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utw_playlista" Association="Self.utw_playlista">
+            <End Role="playlista" EntitySet="playlista" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utw_wyk" Association="Self.utw_wyk">
+            <End Role="wykonawca" EntitySet="wykonawca" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utwor_playlista" Association="Self.utwor_playlista">
+            <End Role="playlista" EntitySet="playlista" />
+            <End Role="utwor_w_playlista" EntitySet="utwor_w_playlista" />
+          </AssociationSet>
+          <AssociationSet Name="uzytkownikPlaylista" Association="Self.uzytkownikPlaylista">
+            <End Role="uzytkownik" EntitySet="uzytkownik" />
+            <End Role="playlista" EntitySet="playlista" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="muzotekaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="administrator">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="album">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nazwa" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_wydania" Type="DateTime" Nullable="false" />
+          <Property Name="dddb" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="utwor" Relationship="Self.utw_alb" FromRole="album" ToRole="utwor" />
+          <NavigationProperty Name="wykonawca" Relationship="Self.album_has_wykonawca" FromRole="album" ToRole="wykonawca" />
+        </EntityType>
+        <EntityType Name="ocena_utwor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ocena" Type="Int32" Nullable="false" />
+          <Property Name="idutwor" Type="Int32" Nullable="false" />
+          <Property Name="iduzytkownik" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="utwor" Relationship="Self.ocena_utwor1" FromRole="ocena_utwor" ToRole="utwor" />
+          <NavigationProperty Name="uzytkownik" Relationship="Self.ocena_uzytkownik" FromRole="ocena_utwor" ToRole="uzytkownik" />
+        </EntityType>
+        <EntityType Name="playlista">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nazwa" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_utworzenia" Type="DateTime" Nullable="false" />
+          <Property Name="opis" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="iduzytkownik" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="utwor" Relationship="Self.utw_playlista" FromRole="playlista" ToRole="utwor" />
+          <NavigationProperty Name="utwor_w_playlista" Relationship="Self.utwor_playlista" FromRole="playlista" ToRole="utwor_w_playlista" />
+          <NavigationProperty Name="uzytkownik" Relationship="Self.uzytkownikPlaylista" FromRole="playlista" ToRole="uzytkownik" />
+        </EntityType>
+        <EntityType Name="utwor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nazwa" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="gatunek" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dlugosc" Type="Int32" />
+          <Property Name="link" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dddb" Type="DateTime" Nullable="false" />
+          <Property Name="idalbum" Type="Int32" Nullable="false" />
+          <Property Name="idwyk" Type="Int32" Nullable="false" />
+          <Property Name="idplaylista" Type="Int32" />
+          <NavigationProperty Name="album" Relationship="Self.utw_alb" FromRole="utwor" ToRole="album" />
+          <NavigationProperty Name="ocena_utwor" Relationship="Self.ocena_utwor1" FromRole="utwor" ToRole="ocena_utwor" />
+          <NavigationProperty Name="playlista" Relationship="Self.utw_playlista" FromRole="utwor" ToRole="playlista" />
+          <NavigationProperty Name="wykonawca" Relationship="Self.utw_wyk" FromRole="utwor" ToRole="wykonawca" />
+        </EntityType>
+        <EntityType Name="utwor_w_playlista">
+          <Key>
+            <PropertyRef Name="utwor_id" />
+            <PropertyRef Name="playlista_id" />
+          </Key>
+          <Property Name="utwor_id" Type="Int32" Nullable="false" />
+          <Property Name="playlista_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="playlista" Relationship="Self.utwor_playlista" FromRole="utwor_w_playlista" ToRole="playlista" />
+        </EntityType>
+        <EntityType Name="uzytkownik">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uprawnienia" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ocena_utwor" Relationship="Self.ocena_uzytkownik" FromRole="uzytkownik" ToRole="ocena_utwor" />
+          <NavigationProperty Name="playlista" Relationship="Self.uzytkownikPlaylista" FromRole="uzytkownik" ToRole="playlista" />
+        </EntityType>
+        <EntityType Name="wykonawca">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imie" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="pseudonim" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_ur" Type="DateTime" />
+          <Property Name="dddb" Type="DateTime" Nullable="false" />
+          <Property Name="opis" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="utwor" Relationship="Self.utw_wyk" FromRole="wykonawca" ToRole="utwor" />
+          <NavigationProperty Name="album" Relationship="Self.album_has_wykonawca" FromRole="wykonawca" ToRole="album" />
+        </EntityType>
+        <Association Name="utw_alb">
+          <End Role="album" Type="Self.album" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="album">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idalbum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ocena_utwor1">
+          <End Role="utwor" Type="Self.utwor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ocena_utwor" Type="Self.ocena_utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="utwor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ocena_utwor">
+              <PropertyRef Name="idutwor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ocena_uzytkownik">
+          <End Role="uzytkownik" Type="Self.uzytkownik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ocena_utwor" Type="Self.ocena_utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ocena_utwor">
+              <PropertyRef Name="iduzytkownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utw_playlista">
+          <End Role="playlista" Type="Self.playlista" Multiplicity="0..1" />
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="playlista">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idplaylista" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utwor_playlista">
+          <End Role="playlista" Type="Self.playlista" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="utwor_w_playlista" Type="Self.utwor_w_playlista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="playlista">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor_w_playlista">
+              <PropertyRef Name="playlista_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="uzytkownikPlaylista">
+          <End Role="uzytkownik" Type="Self.uzytkownik" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="playlista" Type="Self.playlista" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uzytkownik">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="playlista">
+              <PropertyRef Name="iduzytkownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="utw_wyk">
+          <End Role="wykonawca" Type="Self.wykonawca" Multiplicity="1" />
+          <End Role="utwor" Type="Self.utwor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="wykonawca">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="utwor">
+              <PropertyRef Name="idwyk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="album_has_wykonawca">
+          <End Role="album" Type="Self.album" Multiplicity="*" />
+          <End Role="wykonawca" Type="Self.wykonawca" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="muzotekaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="administrator" EntityType="Self.administrator" />
+          <EntitySet Name="album" EntityType="Self.album" />
+          <EntitySet Name="ocena_utwor" EntityType="Self.ocena_utwor" />
+          <EntitySet Name="playlista" EntityType="Self.playlista" />
+          <EntitySet Name="utwor" EntityType="Self.utwor" />
+          <EntitySet Name="utwor_w_playlista" EntityType="Self.utwor_w_playlista" />
+          <EntitySet Name="uzytkownik" EntityType="Self.uzytkownik" />
+          <EntitySet Name="wykonawca" EntityType="Self.wykonawca" />
+          <AssociationSet Name="utw_alb" Association="Self.utw_alb">
+            <End Role="album" EntitySet="album" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="ocena_utwor1" Association="Self.ocena_utwor1">
+            <End Role="utwor" EntitySet="utwor" />
+            <End Role="ocena_utwor" EntitySet="ocena_utwor" />
+          </AssociationSet>
+          <AssociationSet Name="ocena_uzytkownik" Association="Self.ocena_uzytkownik">
+            <End Role="uzytkownik" EntitySet="uzytkownik" />
+            <End Role="ocena_utwor" EntitySet="ocena_utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utw_playlista" Association="Self.utw_playlista">
+            <End Role="playlista" EntitySet="playlista" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="utwor_playlista" Association="Self.utwor_playlista">
+            <End Role="playlista" EntitySet="playlista" />
+            <End Role="utwor_w_playlista" EntitySet="utwor_w_playlista" />
+          </AssociationSet>
+          <AssociationSet Name="uzytkownikPlaylista" Association="Self.uzytkownikPlaylista">
+            <End Role="uzytkownik" EntitySet="uzytkownik" />
+            <End Role="playlista" EntitySet="playlista" />
+          </AssociationSet>
+          <AssociationSet Name="utw_wyk" Association="Self.utw_wyk">
+            <End Role="wykonawca" EntitySet="wykonawca" />
+            <End Role="utwor" EntitySet="utwor" />
+          </AssociationSet>
+          <AssociationSet Name="album_has_wykonawca" Association="Self.album_has_wykonawca">
+            <End Role="album" EntitySet="album" />
+            <End Role="wykonawca" EntitySet="wykonawca" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="muzotekaModelStoreContainer" CdmEntityContainer="muzotekaEntities">
+          <EntitySetMapping Name="administrator">
+            <EntityTypeMapping TypeName="muzotekaModel.administrator">
+              <MappingFragment StoreEntitySet="administrator">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="album">
+            <EntityTypeMapping TypeName="muzotekaModel.album">
+              <MappingFragment StoreEntitySet="album">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+                <ScalarProperty Name="data_wydania" ColumnName="data_wydania" />
+                <ScalarProperty Name="dddb" ColumnName="dddb" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ocena_utwor">
+            <EntityTypeMapping TypeName="muzotekaModel.ocena_utwor">
+              <MappingFragment StoreEntitySet="ocena_utwor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ocena" ColumnName="ocena" />
+                <ScalarProperty Name="idutwor" ColumnName="idutwor" />
+                <ScalarProperty Name="iduzytkownik" ColumnName="iduzytkownik" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="playlista">
+            <EntityTypeMapping TypeName="muzotekaModel.playlista">
+              <MappingFragment StoreEntitySet="playlista">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+                <ScalarProperty Name="data_utworzenia" ColumnName="data_utworzenia" />
+                <ScalarProperty Name="opis" ColumnName="opis" />
+                <ScalarProperty Name="iduzytkownik" ColumnName="iduzytkownik" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="utwor">
+            <EntityTypeMapping TypeName="muzotekaModel.utwor">
+              <MappingFragment StoreEntitySet="utwor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+                <ScalarProperty Name="gatunek" ColumnName="gatunek" />
+                <ScalarProperty Name="dlugosc" ColumnName="dlugosc" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="dddb" ColumnName="dddb" />
+                <ScalarProperty Name="idalbum" ColumnName="idalbum" />
+                <ScalarProperty Name="idwyk" ColumnName="idwyk" />
+                <ScalarProperty Name="idplaylista" ColumnName="idplaylista" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="utwor_w_playlista">
+            <EntityTypeMapping TypeName="muzotekaModel.utwor_w_playlista">
+              <MappingFragment StoreEntitySet="utwor_w_playlista">
+                <ScalarProperty Name="utwor_id" ColumnName="utwor_id" />
+                <ScalarProperty Name="playlista_id" ColumnName="playlista_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uzytkownik">
+            <EntityTypeMapping TypeName="muzotekaModel.uzytkownik">
+              <MappingFragment StoreEntitySet="uzytkownik">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="uprawnienia" ColumnName="uprawnienia" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="wykonawca">
+            <EntityTypeMapping TypeName="muzotekaModel.wykonawca">
+              <MappingFragment StoreEntitySet="wykonawca">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="pseudonim" ColumnName="pseudonim" />
+                <ScalarProperty Name="data_ur" ColumnName="data_ur" />
+                <ScalarProperty Name="dddb" ColumnName="dddb" />
+                <ScalarProperty Name="opis" ColumnName="opis" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="album_has_wykonawca" TypeName="muzotekaModel.album_has_wykonawca" StoreEntitySet="album_has_wykonawca">
+            <EndProperty Name="album">
+              <ScalarProperty Name="id" ColumnName="album_id" />
+            </EndProperty>
+            <EndProperty Name="wykonawca">
+              <ScalarProperty Name="id" ColumnName="wykonawca_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

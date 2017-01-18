@@ -1,0 +1,69 @@
+﻿@model Muzoteka.Models.utwor
+
+@{
+    ViewBag.Title = "Szczegóły";
+}
+
+<h2>Szczegóły utworu</h2>
+
+<div>
+    <h4>@Model.nazwa</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nazwa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazwa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gatunek)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gatunek)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dlugosc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dlugosc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.link)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.link)
+        </dd>
+
+        <dt>
+            Album
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.album.nazwa)
+        </dd>
+
+        <dt>
+            Wykonawca
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.pseudonim)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if (Context.User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edytuj  ", "Edit", new { id = Model.id }, new { @class = "btn btn-primary" })
+    }
+    @Html.ActionLink("Powrót do listy utworów", "Index", new { }, new { @class = "btn btn-primary" })
+</p>

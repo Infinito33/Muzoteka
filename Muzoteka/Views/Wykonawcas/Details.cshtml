@@ -1,0 +1,77 @@
+﻿@model Muzoteka.ViewModel.WykonawcaViewModel
+
+@{
+    ViewBag.Title = "Szczegóły";
+}
+
+<h2>Szczegóły wykonawcy</h2>
+
+<div>
+    <h4>@Model.wykonawca.pseudonim</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.imie)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.imie)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.nazwisko)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.nazwisko)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.pseudonim)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.pseudonim)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.data_ur_short)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.data_ur_short)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.opis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wykonawca.opis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.album)
+        </dt>
+
+        <dd>
+            @Html.ListBoxFor(m => m.wykonawca.album, new SelectList(Model.wykonawca.album, "id", "nazwa"))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wykonawca.utwor)
+        </dt>
+
+        <dd>
+            @Html.ListBoxFor(m => m.wykonawca.album, new SelectList(Model.wykonawca.utwor, "id", "nazwa"))
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @if (Context.User.IsInRole("ADMIN"))
+    {
+        @Html.ActionLink("Edytuj", "Edit", new { id = Model.wykonawca.id }, new { @class = "btn btn-primary" })
+    }
+    @Html.ActionLink("Powrót do listy", "Index", new { }, new { @class = "btn btn-primary" })
+</p>
